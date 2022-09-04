@@ -1,5 +1,6 @@
 import 'package:firebase_app/home/food_page_body.dart';
 import 'package:firebase_app/widgets/big_text.dart';
+import 'package:firebase_app/widgets/food_item.dart';
 import 'package:firebase_app/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_app/utils/colors.dart';
@@ -15,12 +16,11 @@ class MainFoodPage extends StatefulWidget {
 class _MainFoodPageState extends State<MainFoodPage> {
   @override
   Widget build(BuildContext context) {
-    // upper body of the application
     return Scaffold(
       // >> wrapping with a column so the buttons and widgets start from the top
       body: Column(
         children: [
-          // >> upper search bar
+          // >> upper search & country bar
           Container(
             // spacing out between the bar and other components
             margin: const EdgeInsets.only(top: 45, bottom: 15),
@@ -60,7 +60,9 @@ class _MainFoodPageState extends State<MainFoodPage> {
             ),
           ),
           // >> the sliding panel page
-          FoodPageBody()
+          const FoodPageBody(),
+          const SizedBox(height: 30),
+          FoodItem(name: "test", type: "test", distance: 1.2, duration: 50),
         ],
       ),
     );

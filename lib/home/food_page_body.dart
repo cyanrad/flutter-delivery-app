@@ -1,4 +1,6 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:firebase_app/utils/colors.dart';
+import 'package:firebase_app/utils/diamentions.dart';
 import 'package:firebase_app/widgets/big_text.dart';
 import 'package:firebase_app/widgets/icon_and_text_widget.dart';
 import 'package:firebase_app/widgets/small_text.dart';
@@ -19,7 +21,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   PageController pageController = PageController(viewportFraction: 0.85);
   double _currPageValue = 0.0;
   final double _scaleFactor = 0.8; // 80% of the panel original size
-  final double _height = 220; // size of the panel
+  final double _height = Diamensions.pageViewContainer; // size of the panel
 
   // >> getting the page value
   @override
@@ -44,14 +46,30 @@ class _FoodPageBodyState extends State<FoodPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 320,
-      child: PageView.builder(
-          controller: pageController,
-          itemCount: 5,
-          itemBuilder: (context, position) {
-            return _buildPageItem(position);
-          }),
+    return Column(
+      children: [
+        SizedBox(
+          height: Diamensions.pageView,
+          child: PageView.builder(
+              controller: pageController,
+              itemCount: 5,
+              itemBuilder: (context, position) {
+                return _buildPageItem(position);
+              }),
+        ),
+        // the dot indicator below the panels
+        DotsIndicator(
+          dotsCount: 5,
+          position: _currPageValue,
+          decorator: DotsDecorator(
+            activeColor: AppColors.mainColor,
+            size: const Size.square(9.0),
+            activeSize: const Size(18.0, 9.0),
+            activeShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+          ),
+        ),
+      ],
     );
   }
 
@@ -109,7 +127,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             height: _height, // height of a single panel
             margin: const EdgeInsets.only(left: 15, right: 15),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(Diamensions.radius30),
               // switching between color depending on panel index
               color: index.isEven
                   ? const Color(0xFF69c5df)
@@ -126,29 +144,32 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             // pushes the widget to the bottom of the parent
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 120,
+              height: Diamensions.pageViewTextContainer,
               // bottom margin to control alignment
               margin: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(Diamensions.radius20),
                 color: Colors.white,
                 boxShadow: const [
                   BoxShadow(
                       color: Color(0xFFe8e8e8),
                       blurRadius: 5.0,
                       offset: Offset(0, 5)),
+                  BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
+                  BoxShadow(color: Colors.white, offset: Offset(5, 0)),
                 ],
               ),
               // the stuff inside the white box
               child: Container(
                 // just for the padding
-                padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
+                padding: EdgeInsets.only(
+                    left: 15, top: Diamensions.height15, right: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // >> line 1: the box title
                     BigText(text: "Fruits & Vegs"),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Diamensions.height10),
                     // >> line 2: stars and comment count
                     Row(
                       children: [
@@ -169,7 +190,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                         SmallText(text: "1287 comments")
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: Diamensions.height20),
                     // >> line 3: icons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
